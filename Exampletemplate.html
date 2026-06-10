@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next-Gen Health UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f3f4f3; /* Light premium grey from Helixa */
+            color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR (Style from Image 1) --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 80px;
+            background: transparent;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #000;
+        }
+
+        .nav-auth {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-btn {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .signup-btn {
+            text-decoration: none;
+            background-color: #161917;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .signup-btn:hover {
+            background-color: #2c312e;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px 0 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 400;
+            line-height: 1.15;
+            color: #161917;
+            max-width: 700px;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* --- ACCESS TOGGLE BUTTON (Style from Image 2) --- */
+        .toggle-container {
+            display: inline-flex;
+            background-color: #e5e7e5;
+            padding: 4px;
+            border-radius: 30px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .toggle-text {
+            font-size: 13px;
+            color: #666;
+            padding: 0 16px;
+        }
+
+        .toggle-btn {
+            background-color: #161917;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .toggle-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* --- SEARCH BOX / CONSOLE (Hybrid Concept) --- */
+        .search-box-container {
+            width: 100%;
+            max-width: 640px;
+            background-color: #161917; /* Dark elegant theme from Image 1 */
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            text-align: left;
+        }
+
+        .search-placeholder-text {
+            color: #8a8d8a;
+            font-size: 14px;
+            margin-bottom: 16px;
+            padding-left: 8px;
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #222623;
+            border-radius: 10px;
+            padding: 12px 16px;
+            position: relative;
+        }
+
+        /* Combining the search icon/text style from Image 2 inside the dark box */
+        .search-input-wrapper span.search-icon {
+            color: #8a8d8a;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .search-input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 15px;
+            width: 100%;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-input::placeholder {
+            color: #5a5e5b;
+        }
+
+        .submit-btn {
+            background-color: #ffffff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-left: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* --- CHIPS / SWITCHING OPTIONS (From Image 1 console interior) --- */
+        .switch-options {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+            padding-left: 4px;
+        }
+
+        .option-chip {
+            background: transparent;
+            border: 1px solid #333835;
+            color: #a4a8a5;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .option-chip:hover {
+            border-color: #5a5e5b;
+            color: #ffffff;
+        }
+
+        .option-chip.active {
+            background-color: #333835;
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        /* Decorative color gradient background glow mimicking Image 2 */
+        .glow-bg {
+            position: absolute;
+            bottom: -200px;
+            width: 100%;
+            height: 400px;
+            background: radial-gradient(circle, rgba(235,180,185,0.4) 0%, rgba(180,200,235,0.3) 50%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Responsive spacing adjustments */
+        @media (max-width: 768px) {
+            .navbar { padding: 24px 24px; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 38px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Helixa</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Membership</a></li>
+            <li><a href="#">Resources</a></li>
+        </ul>
+        <div class="nav-auth">
+            <a href="#" class="login-btn">Login</a>
+            <a href="#" class="signup-btn">Sign up</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <h1>Next-Gen Health,<br>Powered by AI + You</h1>
+        <p>Transform raw data into actionable health intelligence.</p>
+
+        <div class="toggle-container">
+            <span class="toggle-text">Early access for Members</span>
+            <button class="toggle-btn" onclick="alert('Downloading Dashboard...')">Download Dia</button>
+        </div>
+
+        <div class="search-box-container">
+            <div class="search-placeholder-text">Welcome to Helixa — your AI health companion!</div>
+            
+            <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Ask AI Doctor or input symptoms...">
+                <button class="submit-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#161917" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                </button>
+            </div>
+
+            <div class="switch-options">
+                <button class="option-chip active" onclick="setActive(this)">✨ Run My Health Scan</button>
+                <button class="option-chip" onclick="setActive(this)">💬 Ask AI Doctor</button>
+                <button class="option-chip" onclick="setActive(this)">📋 Get Health Plan</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="glow-bg"></div>
+
+    <script>
+        // Quick JS snippet to handle the switching active state of chips
+        function setActive(button) {
+            // Remove active class from all sibling chips
+            const chips = button.parentElement.querySelectorAll('.option-chip');
+            chips.forEach(chip => chip.classList.remove('active'));
+            
+            // Add active class to clicked chip
+            button.classList.add('active');
+            
+            // Contextually update search bar placeholder depending on active choice
+            const searchInput = document.querySelector('.search-input');
+            if(button.innerText.includes("Scan")) {
+                searchInput.placeholder = "Analyze health reports, files, or metrics...";
+            } else if(button.innerText.includes("Doctor")) {
+                searchInput.placeholder = "Ask AI Doctor or input symptoms...";
+            } else {
+                searchInput.placeholder = "Generate custom diet, lifestyle, or workout tracking goals...";
+            }
+        }
+    </script>
+</body>
+</html>
+
