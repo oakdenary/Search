@@ -4,6 +4,7 @@ import { getFolders } from '../api/folders';
 import { getUserAccess } from '../api/users';
 import { mockDb } from '../api/client';
 import SearchResultCard from '../components/SearchResultCard';
+import PreviewPanel from '../components/PreviewPanel';
 
 const Search = () => {
   const [query, setQuery] = useState('');
@@ -13,6 +14,7 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState('');
+  const [selectedDoc, setSelectedDoc] = useState(null);
   
   const currentUser = mockDb.getCurrentUser();
 
@@ -52,6 +54,7 @@ const Search = () => {
     setLoading(true);
     setError('');
     setHasSearched(true);
+    setSelectedDoc(null); // Reset preview on new search
     try {
       const data = await searchDocuments(query, folder);
       setResults(Array.isArray(data) ? data : []);
@@ -69,6 +72,7 @@ const Search = () => {
     setResults([]);
     setHasSearched(false);
     setError('');
+    setSelectedDoc(null); // Reset preview selection
   };
 
   return (
@@ -156,12 +160,12 @@ const Search = () => {
 
       {/* Search Results Area */}
       {hasSearched && (
-        <div className="flex-1 max-w-4xl mx-auto w-full transition-opacity duration-300">
+        <div className="flex-1 w-full max-w-7xl mx-auto transition-all duration-300">
           {loading ? (
             // Dynamic Loading Skeleton Cards
-            <div className="space-y-4">
+            <div className="space-y-4 w-full animate-pulse-subtle">
               {[1, 2, 3].map((n) => (
-                <div key={n} className="rounded-xl border border-slate-200/60 bg-white p-5 animate-pulse">
+                <div key={n} className="rounded-xl border border-slate-200/60 bg-white p-5">
                   <div className="flex items-start justify-between">
                     <div className="flex gap-3 items-center w-2/3">
                       <div className="h-10 w-10 bg-slate-100 rounded-lg shrink-0" />
@@ -177,15 +181,40 @@ const Search = () => {
               ))}
             </div>
           ) : results.length > 0 ? (
-            // Render results cards list
-            <div className="space-y-4 pb-12">
-              <div className="flex items-center justify-between text-xs text-slate-400 mb-2 font-medium px-1">
-                <span>Showing {results.length} document matches</span>
-                <span>Sorted by OpenSearch relevance</span>
+            // Render results list + optional preview panel in a flex row
+            <div className={`flex flex-col lg:flex-row gap-6 pb-12 w-full animate-fade-in ${selectedDoc ? 'items-start' : 'items-stretch'}`}>
+              {/* Left results column */}
+              <div className={`space-y-4 transition-all duration-300 ${selectedDoc ? 'w-full lg:w-[50%]' : 'w-full'}`}>
+                <div className="flex items-center justify-between text-xs text-slate-400 mb-2 font-medium px-1">
+                  <span>Showing {results.length} document matches</span>
+                  <span>Sorted by OpenSearch relevance</span>
+                </div>
+                {results.map((res) => (
+                  <SearchResultCard
+                    key={res.id}
+                    result={res}
+                    isSelected={selectedDoc && selectedDoc.id === res.id}
+                    onSelect={() => setSelectedDoc(selectedDoc && selectedDoc.id === res.id ? null : res)}
+                  />
+                ))}
               </div>
-              {results.map((res) => (
-                <SearchResultCard key={res.id} result={res} />
-              ))}
+
+              {/* Right preview panel column */}
+              <div
+                className={`w-full lg:w-[50%] lg:sticky lg:top-6 shrink-0 transition-all duration-500 ease-in-out transform origin-right ${
+                  selectedDoc
+                    ? 'opacity-100 translate-x-0 scale-100 max-h-none pointer-events-auto'
+                    : 'opacity-0 translate-x-12 scale-95 lg:w-0 max-h-0 lg:max-h-none overflow-hidden pointer-events-none'
+                }`}
+                style={selectedDoc ? { maxHeight: 'calc(100vh - 6rem)' } : undefined}
+              >
+                {selectedDoc && (
+                  <PreviewPanel
+                    doc={selectedDoc}
+                    onClose={() => setSelectedDoc(null)}
+                  />
+                )}
+              </div>
             </div>
           ) : (
             // Styled Empty States

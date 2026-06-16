@@ -103,6 +103,13 @@ const DEFAULT_DOCUMENTS = [
     similarityScore: 0.79,
     snippet: '...Deep Document Search is used by all employees to lookup policies. For folder access level requests, contact the system administrator through the profile portal...',
   },
+  {
+    id: 'doc-testa-1',
+    title: 'testa_keyword_analysis_report.docx',
+    folder: 'engineering',
+    similarityScore: 0.96,
+    snippet: '...The testa variable was referenced across multiple modules. Each testa instance maps to a unique identifier. Run testa validation before deployment...',
+  },
 ];
 
 // Map user ID to set of allowed folders (Default: admin has access to everything; Jane Doe has marketing and HR)
@@ -117,7 +124,7 @@ const initMockDB = () => {
   const existingDocs = localStorage.getItem('dd_documents');
   
   // Force re-seed if the db is not initialized OR if the documents list is missing the new test documents
-  const needsSeeding = !isInitialized || !existingDocs || !existingDocs.includes('test_');
+  const needsSeeding = !isInitialized || !existingDocs || !existingDocs.includes('test_') || !existingDocs.includes('doc-testa-1');
 
   if (needsSeeding) {
     localStorage.setItem('dd_users', JSON.stringify(DEFAULT_USERS));

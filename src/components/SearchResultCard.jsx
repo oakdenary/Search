@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SearchResultCard = ({ result }) => {
+const SearchResultCard = ({ result, isSelected, onSelect }) => {
   const [downloading, setDownloading] = useState(false);
   
   const { title, folderName, similarityScore, snippet } = result;
@@ -99,7 +99,14 @@ const SearchResultCard = ({ result }) => {
   };
 
   return (
-    <div className="group relative rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md hover:shadow-blue-500/5">
+    <div
+      onClick={onSelect}
+      className={`group relative rounded-xl border p-5 shadow-sm transition-all duration-300 cursor-pointer hover:-translate-y-0.5 hover:shadow-md hover:shadow-blue-500/5 ${
+        isSelected
+          ? 'border-blue-500 ring-2 ring-blue-500/10 bg-blue-50/5'
+          : 'border-slate-200/80 bg-white hover:border-blue-200'
+      }`}
+    >
       <div className="flex items-start justify-between gap-4">
         {/* Title and Icon */}
         <div className="flex items-center gap-3 min-w-0">
@@ -107,7 +114,7 @@ const SearchResultCard = ({ result }) => {
             {fileStyle.icon}
           </div>
           <div className="min-w-0">
-            <h3 className="font-semibold text-slate-800 truncate group-hover:text-blue-600 transition-colors">
+            <h3 className={`font-semibold truncate transition-colors ${isSelected ? 'text-blue-600' : 'text-slate-800 group-hover:text-blue-600'}`}>
               {title}
             </h3>
             <div className="mt-1 flex items-center gap-2">
@@ -140,7 +147,10 @@ const SearchResultCard = ({ result }) => {
       {/* Download Action Footer */}
       <div className="mt-4 flex items-center justify-end border-t border-slate-100 pt-3">
         <button
-          onClick={triggerDownload}
+          onClick={(e) => {
+            e.stopPropagation();
+            triggerDownload();
+          }}
           disabled={downloading}
           className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50 transition active:scale-95 disabled:opacity-50"
         >
